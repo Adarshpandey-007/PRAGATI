@@ -1,201 +1,178 @@
-# Pragati School Platform (Frontend + Backend)
+# PRAGATI: Smart School Governance Platform
 
-Pragati is a role-based school management prototype with:
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.0.0-blue?style=for-the-badge&logo=react)](https://react.dev/)
+[![Express](https://img.shields.io/badge/Express-4.21.2-lightgrey?style=for-the-badge&logo=express)](https://expressjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-- Next.js 16 frontend (App Router, TypeScript, Tailwind CSS)
-- Express backend (JWT auth, mock in-memory data)
+**PRAGATI** (Smart School Governance Platform) is a role-based, production-ready school management platform designed to engineer smarter education workflows for every classroom. Developed under the context of the **Smart India Hackathon (SIH) 2026 Problem Statement** from the **Ministry of Education & Government of Punjab**.
 
-This repository contains both apps.
+The platform features a multi-tiered role governance system, automated teacher/student attendance management, classroom schedule tracking, complaint moderation, and a complete catalog of government programs and schemes.
 
-## Tech Stack
+---
 
-- Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS
-- Backend: Express 4, JWT auth, JSON file persistence
-- Package manager: npm (recommended for this repo)
+## 🏗️ Project Architecture
 
-## Quick Start (Windows)
+The repository contains both frontend and backend subprojects:
+
+- **Frontend**: Next.js 16 (App Router) built with React 19, TypeScript, and styled using Tailwind CSS and the UX4G government design tokens.
+- **Backend**: Express API server with JWT authentication, endpoint validation, and automated JSON-file-based data persistence.
+
+---
+
+## ⚡ Quick Start Guide (Local Development)
 
 ### 1. Prerequisites
+- **Node.js**: Version 20.x or higher
+- **npm**: Included with Node.js (recommended package manager)
 
-- Node.js 20+
-- npm (comes with Node.js)
+### 2. Install Dependencies
 
-### 2. Install dependencies
-
-From project root:
-
-```powershell
+Install root (frontend) dependencies:
+```bash
 npm install
 ```
 
-From backend folder:
-
-```powershell
+Install backend dependencies:
+```bash
 cd backend
 npm install
 cd ..
 ```
 
-### 3. Configure environment files
+### 3. Configure Environment Variables
 
-Frontend env:
-
-```powershell
+Create the frontend environment file:
+```bash
+# Windows (PowerShell)
 Copy-Item .env.local.example .env.local
 ```
 
-Backend env:
-
-```powershell
+Create the backend environment file:
+```bash
+# Windows (PowerShell)
 Copy-Item backend/.env.example backend/.env
 ```
 
-Default local values:
+**Default Local Configurations:**
+- Frontend backend API endpoint: `http://localhost:4000`
+- Backend server port: `4000`
 
-- Frontend backend URL: `http://localhost:4000`
-- Backend port: `4000`
+### 4. Run the Platform
 
-### 4. Start backend (Terminal 1)
-
-```powershell
+#### Start Backend API Server (Terminal 1)
+```bash
 cd backend
 npm run dev
 ```
+Health Check Endpoint: `http://localhost:4000/api/health`
 
-Health check:
-
-- `http://localhost:4000/api/health`
-
-### 5. Start frontend (Terminal 2)
-
-```powershell
+#### Start Frontend Next.js Client (Terminal 2)
+```bash
 npm run dev
 ```
+Frontend URL: `http://localhost:3000`
 
-Frontend URL:
+---
 
-- `http://localhost:3000`
+## 🧪 Testing & Code Quality
 
-## Environment Variables
+We maintain a zero-warning, fully typechecked, and tested codebase to ensure production stability.
 
-### Frontend
-
-Used by frontend API helper:
-
-- `NEXT_PUBLIC_BACKEND_URL` (primary)
-- `NEXT_PUBLIC_API_URL` (fallback)
-
-The frontend resolves backend URL from these values and falls back to `http://localhost:4000` when neither is set.
-
-### Backend
-
-- `PORT` (default: `4000`)
-- `AUTH_JWT_SECRET` (required for production)
-
-## Demo Login Credentials
-
-- Admin: `admin@mock.test` / `AdminPass123!`
-- Government: `government@mock.test` / `GovPass123!`
-- Principal: `principal@mock.test` / `PrincipalPass123!`
-- Teacher: `teacher@mock.test` / `TeacherPass123!`
-- Student: `student@mock.test` / `StudentPass123!`
-
-## Account Governance (User Management)
-
-- `ADMIN` can create, update, delete all roles.
-- `GOVERNMENT` can create principal accounts.
-- `PRINCIPAL` can create teacher and student accounts in own school.
-- `TEACHER` and `STUDENT` cannot manage user accounts.
-
-Safety rules:
-
-- Last admin account cannot be deleted.
-- Email must be unique.
-- Role-link validation is enforced (`teacherId` for `TEACHER`, `studentId` for `STUDENT`).
-- School scoping is enforced for school-level managers.
-
-## Mock Test Dataset Policy
-
-- Runtime data is persisted in `backend/data/store.json`.
-- Seed baseline is defined in `backend/src/data.js`.
-- Dataset label `mockTag: "MOCK_TEST_DATA"` is used for predictable demos.
-- To reset to baseline, stop backend and replace `backend/data/store.json` with the repository version.
-
-## Scripts
-
-Root (`package.json`):
-
-- `npm run dev` - Start Next.js dev server
-- `npm run build` - Build frontend
-- `npm run start` - Start built frontend
-- `npm run lint` - Lint frontend
-
-Backend (`backend/package.json`):
-
-- `npm run dev` - Start backend server
-- `npm start` - Start backend server
-
-## Deployment Guide
-
-### Recommended architecture
-
-- Deploy frontend to Vercel.
-- Deploy backend to a separate Node host (Render, Railway, VPS, etc.).
-- Set frontend env `NEXT_PUBLIC_BACKEND_URL` to deployed backend URL.
-
-### Step-by-step
-
-1. Deploy backend first from `backend/`.
-2. Set backend env vars (`PORT`, `AUTH_JWT_SECRET`).
-3. Verify backend health endpoint.
-4. Deploy frontend on Vercel from repository root.
-5. Add Vercel env var `NEXT_PUBLIC_BACKEND_URL`.
-6. Redeploy frontend and validate login + role dashboards.
-
-### Persistence caveat
-
-Backend writes data to `backend/data/store.json`. On ephemeral/serverless filesystems, data can reset after restart.
-
-For stable production data:
-
-- attach persistent disk/volume for backend data, or
-- migrate persistence to a database.
-
-## Lockfile and Build Warning Policy
-
-- This repo should use one package manager lockfile.
-- Recommended: npm only (`package-lock.json`).
-- If you previously used pnpm, remove the unused lockfile to avoid workspace root warnings.
-
-The Next.js tracing-root warning has been addressed by setting `outputFileTracingRoot` in `next.config.mjs`.
-
-## Troubleshooting
-
-### Build warning: stale baseline-browser-mapping data
-
-Non-blocking warning. To refresh:
-
-```powershell
-npm i baseline-browser-mapping@latest -D
+### 1. Automated Integration Tests
+The project features a native, zero-dependency integration test suite using Node.js's built-in `node --test` runner. The suite automatically spins up a test server instance, checks API endpoints, verifies JWT login authorization, and validates scoping logic.
+```bash
+npm run test
 ```
 
-### Backend route not found
+### 2. Code Linting
+Run the ESLint flat config check to find syntax issues or code style warnings:
+```bash
+npm run lint
+```
 
-- Confirm backend is running.
-- Confirm frontend env points to correct backend URL.
+### 3. Production Build Compilation
+Verify that all TypeScript code passes strict typechecking and compiles successfully for production deployment:
+```bash
+npm run build
+```
 
-### Login works but redirects back
+---
 
-- Clear browser storage and sign in again (localStorage session data).
+## 🔑 Demo Credentials
 
-## Project Structure
+To test different platform perspectives, log in with the following credentials or use the **"Use Demo Credentials"** button present on each login page:
 
-- `app/` - Next.js pages/layouts
-- `components/` - Shared/UI components
-- `lib/` - Shared helpers/utilities
-- `backend/src/` - Express API server
-- `public/` - Static assets
+| Role | Username / Email | Password | Scope / Permissions |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@mock.test` | `AdminPass123!` | Platform God-Mode: full lifecycle CRUD over schools, classes, teachers, students, and user accounts. |
+| **Government** | `government@mock.test` | `GovPass123!` | Create principal accounts, moderate programs & schemes, view multi-school reports. |
+| **Principal** | `principal@mock.test` | `PrincipalPass123!` | Manage own school accounts (teachers, students), configure attendance policies. |
+| **Teacher** | `teacher@mock.test` | `TeacherPass123!` | View schedules, mark attendance, track classroom exam analytics. |
+| **Student** | `student@mock.test` | `StudentPass123!` | View attendance cards, study materials, and log complaints. |
 
-## Notes
+---
 
-- TypeScript path alias `@/*` is configured in `tsconfig.json`.
+## 🛡️ User & Account Governance
+
+The platform enforces account creation boundaries across roles:
+- `ADMIN` can create, update, and delete accounts for all roles.
+- `GOVERNMENT` can create and manage `PRINCIPAL` accounts.
+- `PRINCIPAL` can create and manage `TEACHER` and `STUDENT` accounts belonging to their specific school.
+- `TEACHER` and `STUDENT` roles are read-only regarding account administration.
+
+### Account Protection Rules:
+- The last remaining `ADMIN` account cannot be deleted to prevent lockdown.
+- All email addresses must be unique across the platform.
+- Strict role-link checks are applied (requiring a valid `teacherId` for teachers or `studentId` for students).
+
+---
+
+## 💾 Persistent Storage Policy
+
+- Backend mock data defaults are seeded in `backend/src/data.js`.
+- Active runtime changes are persisted to `backend/data/store.json`.
+- **To reset the dataset back to baseline**: Stop the backend server and replace the contents of `backend/data/store.json` with the original repository baseline (or delete the file to trigger auto-re-seeding upon boot).
+
+> [!CAUTION]
+> In serverless environments (e.g. Vercel/Render ephemeral disks), local JSON file writes will reset on dyno/container restarts. For production deployments, attach a persistent storage volume or migrate the data adapters in `backend/src/storage.js` to a SQL or NoSQL database.
+
+---
+
+## 🚀 Deployment Guide
+
+1. **Deploy Backend API Server**:
+   - Host the Node Express app on a containerized service (Render, Railway, Fly.io, or VPS).
+   - Configure the environment variables:
+     - `PORT` (e.g., `4000`)
+     - `AUTH_JWT_SECRET` (generate a strong crypto secret for production)
+   - Ensure the server is reachable and `/api/health` returns `{ "status": "ok" }`.
+
+2. **Deploy Frontend Client**:
+   - Host the Next.js frontend on [Vercel](https://vercel.com).
+   - Configure the environment variable:
+     - `NEXT_PUBLIC_BACKEND_URL`: Points to your deployed Backend API URL.
+   - Deploy! Next.js will compile the statically optimized routes.
+
+---
+
+## 📁 Repository Structure
+
+```text
+├── app/                      # Next.js App Router (pages & layouts)
+│   ├── (auth)/               # Auth screens (login cards, redirects)
+│   ├── admin/                # Admin dashboard panels & settings
+│   ├── government/           # Government dashboard pages
+│   ├── principal/            # Principal control center panels
+│   ├── teacher/              # Teacher dashboards and exam panels
+│   └── student/              # Student profile, study material & complaints
+├── components/               # Reusable UI component modules
+├── lib/                      # Central config, auth storage & clients
+├── tests/                    # Native Node integration test suites
+├── backend/                  # Express API Backend Server
+│   ├── data/                 # Persistent store.json
+│   └── src/                  # Express router, storage, and seed models
+├── README.md                 # Public documentation
+└── tsconfig.json             # TypeScript rules
+```

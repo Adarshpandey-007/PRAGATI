@@ -32,7 +32,7 @@ function requireAuth(secret) {
       const decoded = jwt.verify(token, secret);
       req.user = decoded;
       return next();
-    } catch (err) {
+    } catch {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
   };

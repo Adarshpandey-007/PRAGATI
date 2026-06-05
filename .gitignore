@@ -28,6 +28,7 @@ Thumbs.db
 
 # Misc
 *.log
+*.tsbuildinfo
 
 # Mobile App - React Native
 PragatiStudentApp/
