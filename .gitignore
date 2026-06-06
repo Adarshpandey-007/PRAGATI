@@ -20,7 +20,6 @@ coverage/
 .env*
 !.env.example
 !.env.local.example
-!.env.production
 
 # Progress report and sensitive docs
 PROGRESS_REPORT.md
