@@ -19,6 +19,11 @@ coverage/
 # Environment files
 .env*
 !.env.example
+!.env.local.example
+
+# Progress report and sensitive docs
+PROGRESS_REPORT.md
+backend/data/store.json
 
 # Editor directories and files
 .vscode/
